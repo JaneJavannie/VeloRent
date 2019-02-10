@@ -1,0 +1,74 @@
+﻿@model WebApplication2.Req
+
+@{
+    ViewBag.Title = "Подробнее";
+}
+
+<h2>Подробнее</h2>
+
+<div>
+    <h4>Заявки</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("ФИО")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Clients.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Велосипед")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Velos.model)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Дата аренды")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateT)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Взят до")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateNT)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Дата реального возврата")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateRR)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Точка аренды")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RentPoints.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Точка сдачи")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RentPoints1.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Вернуться к списку", "Index")
+</p>

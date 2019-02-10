@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище VeloRentDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="passport" Type="bigint" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="13" />
+        </EntityType>
+        <EntityType Name="RentPoints">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Req">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="veloID" Type="int" Nullable="false" />
+          <Property Name="dateT" Type="datetime" Nullable="false" />
+          <Property Name="dateNT" Type="datetime" Nullable="false" />
+          <Property Name="dateRR" Type="datetime" />
+          <Property Name="pointID" Type="int" />
+          <Property Name="returnPointID" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Velos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="model" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="taken" Type="bit" Nullable="false" />
+          <Property Name="timesT" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Req_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_RentPoints">
+          <End Role="RentPoints" Type="Self.RentPoints" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentPoints">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="pointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_RentPoints1">
+          <End Role="RentPoints" Type="Self.RentPoints" Multiplicity="0..1" />
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentPoints">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="returnPointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Velos">
+          <End Role="Velos" Type="Self.Velos" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Velos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="veloID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище VeloRentDBModelContainer">
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentPoints" EntityType="Self.RentPoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Req" EntityType="Self.Req" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Velos" EntityType="Self.Velos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Req_Clients" Association="Self.FK_Req_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_RentPoints" Association="Self.FK_Req_RentPoints">
+            <End Role="RentPoints" EntitySet="RentPoints" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_RentPoints1" Association="Self.FK_Req_RentPoints1">
+            <End Role="RentPoints" EntitySet="RentPoints" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Velos" Association="Self.FK_Req_Velos">
+            <End Role="Velos" EntitySet="Velos" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VeloRentDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="passport" Type="Int64" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Req" Relationship="VeloRentDBModel.FK_Req_Clients" FromRole="Clients" ToRole="Req" />
+          <Property Name="phone" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RentPoints">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Req" Relationship="VeloRentDBModel.FK_Req_RentPoints" FromRole="RentPoints" ToRole="Req" />
+          <NavigationProperty Name="Req1" Relationship="VeloRentDBModel.FK_Req_RentPoints1" FromRole="RentPoints" ToRole="Req" />
+        </EntityType>
+        <EntityType Name="Req">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="veloID" Type="Int32" Nullable="false" />
+          <Property Name="dateT" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dateNT" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dateRR" Type="DateTime" Precision="3" />
+          <Property Name="pointID" Type="Int32" />
+          <NavigationProperty Name="Clients" Relationship="VeloRentDBModel.FK_Req_Clients" FromRole="Req" ToRole="Clients" />
+          <NavigationProperty Name="RentPoints" Relationship="VeloRentDBModel.FK_Req_RentPoints" FromRole="Req" ToRole="RentPoints" />
+          <NavigationProperty Name="Velos" Relationship="VeloRentDBModel.FK_Req_Velos" FromRole="Req" ToRole="Velos" />
+          <Property Name="returnPointID" Type="Int32" />
+          <NavigationProperty Name="RentPoints1" Relationship="VeloRentDBModel.FK_Req_RentPoints1" FromRole="Req" ToRole="RentPoints" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Velos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="taken" Type="Boolean" Nullable="false" />
+          <Property Name="timesT" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Req" Relationship="VeloRentDBModel.FK_Req_Velos" FromRole="Velos" ToRole="Req" />
+        </EntityType>
+        <EntityContainer Name="VeloRentDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Clients" />
+          <EntitySet Name="RentPoints" EntityType="Self.RentPoints" />
+          <EntitySet Name="Req" EntityType="Self.Req" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Velos" EntityType="Self.Velos" />
+          <AssociationSet Name="FK_Req_Clients" Association="VeloRentDBModel.FK_Req_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_RentPoints" Association="VeloRentDBModel.FK_Req_RentPoints">
+            <End Role="RentPoints" EntitySet="RentPoints" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Velos" Association="VeloRentDBModel.FK_Req_Velos">
+            <End Role="Velos" EntitySet="Velos" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_RentPoints1" Association="VeloRentDBModel.FK_Req_RentPoints1">
+            <End Role="RentPoints" EntitySet="RentPoints" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Req_Clients">
+          <End Type="VeloRentDBModel.Clients" Role="Clients" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeloRentDBModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_RentPoints">
+          <End Type="VeloRentDBModel.RentPoints" Role="RentPoints" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeloRentDBModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentPoints">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="pointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Velos">
+          <End Type="VeloRentDBModel.Velos" Role="Velos" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeloRentDBModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Velos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="veloID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_RentPoints1">
+          <End Type="VeloRentDBModel.RentPoints" Role="RentPoints" Multiplicity="0..1" />
+          <End Type="VeloRentDBModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentPoints">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="returnPointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище VeloRentDBModelContainer" CdmEntityContainer="VeloRentDBEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="VeloRentDBModel.Clients">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="passport" ColumnName="passport" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentPoints">
+            <EntityTypeMapping TypeName="VeloRentDBModel.RentPoints">
+              <MappingFragment StoreEntitySet="RentPoints">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Req">
+            <EntityTypeMapping TypeName="VeloRentDBModel.Req">
+              <MappingFragment StoreEntitySet="Req">
+                <ScalarProperty Name="returnPointID" ColumnName="returnPointID" />
+                <ScalarProperty Name="pointID" ColumnName="pointID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="veloID" ColumnName="veloID" />
+                <ScalarProperty Name="dateT" ColumnName="dateT" />
+                <ScalarProperty Name="dateNT" ColumnName="dateNT" />
+                <ScalarProperty Name="dateRR" ColumnName="dateRR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="VeloRentDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Velos">
+            <EntityTypeMapping TypeName="VeloRentDBModel.Velos">
+              <MappingFragment StoreEntitySet="Velos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="taken" ColumnName="taken" />
+                <ScalarProperty Name="timesT" ColumnName="timesT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

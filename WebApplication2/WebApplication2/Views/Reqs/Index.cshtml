@@ -1,0 +1,72 @@
+﻿@model IEnumerable<WebApplication2.Req>
+
+@{
+    ViewBag.Title = "Заявки";
+}
+
+<h2>Заявки</h2>
+
+<p>
+    @Html.ActionLink("Добавить", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("ФИО")
+        </th>
+        <th>
+            @Html.DisplayName("Велосипед")
+        </th>
+        <th>
+            @Html.DisplayName("Дата аренды")
+        </th>
+        <th>
+            @Html.DisplayName("Взят до")
+        </th>
+        <th>
+            @Html.DisplayName("Дата рельного возрата")
+        </th>
+        <th>
+            @Html.DisplayName("Точка аренды")
+        </th>
+        <th>
+            @Html.DisplayName("Точка сдачи")
+        </th>
+
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Clients.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Velos.model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateNT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateRR)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RentPoints.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RentPoints1.name)
+        </td>
+
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Подробнее", "Details", new { id=item.id }) |
+            @Html.ActionLink("Удалить", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

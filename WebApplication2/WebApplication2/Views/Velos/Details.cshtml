@@ -1,0 +1,68 @@
+﻿@model WebApplication2.Velos
+
+@{
+    ViewBag.Title = "Подробнее";
+}
+
+<h2>Подробнее</h2>
+
+<div>
+    <h4>Велосипед</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Модель")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.model)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Взят")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.taken)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Взят раз")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.timesT)
+        </dd>
+
+    </dl>
+
+    <br>
+    </br>
+@*В цикле перебираем элементы, записанные в ViewData*@
+
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>Точка</td>
+                <td>Среднее время проката</td>
+            </tr>
+            @{System.Data.DataTable objData = (System.Data.DataTable)ViewData["Velos"];}
+            @foreach (System.Data.DataRow row in objData.Rows)
+            {
+                <tr>
+                    @foreach(System.Data.DataColumn col in objData.Columns)
+                    {
+                        <td>
+                            @{ string s = Convert.ToString(row[col]);}
+                            @Html.DisplayFor(model => s)
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+</div>
+<br>
+</br>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Вернуться к списку", "Index")
+</p>

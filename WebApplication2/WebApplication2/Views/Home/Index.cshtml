@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "VeloRent";
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+
+    <div class="jumbotron">
+        <h1>ВелоПрокат</h1>
+        <p class="lead">История взятия велоспедов</p>
+
+    </div>
+
+    <select id="velos" style="width: 200px;"></select>
+
+<br>
+</br>
+
+    <table id="tableBody" border="1" cellpadding="5" title="Заявки на велосипед"></table>
+
+    <script type="text/javascript">
+
+        $.getJSON("/Home/Velos", function (result) {
+            var velos = $("#velos");
+            $.each(result, function () {
+                velos.append($("<option />").val(this.id).text(this.model));
+            });
+        });
+
+        $("#velos").change(function () {
+            getVeloReqs($(this).val());
+        });
+
+        function getVeloReqs(id) {
+            $.getJSON('/Home/VeloReqs',
+                {
+                    id: id
+                },
+                function (result) {
+                    $.each(result, function () {
+                        var target = $("#tableBody");
+                        target.empty();
+                        
+                        target.append("<tr><td>" + "ФИО клиента" 
+                            + "</td><td>" + "Взят на точке"
+                            + "</td><td>" + "Сдан на точку"
+                            + "</td><td>" + "Дата аренды"
+                            + "</td><td>" + "Аренда до"
+                            + "</td><td>" + "Дата реального возврата"
+                            + "</td></tr>");
+                        $.each(result, function () {
+                            target.append("<tr><td>" + this.client
+                                + "</td><td>" + GetPointName(this.rentPoint)
+                                + "</td><td>" + GetPointName(this.returnPoint)
+                                + "</td><td>" + ToJavaScriptDate(this.dateT)
+                                + "</td><td>" + ToJavaScriptDate(this.dateNT)
+                                + "</td><td>" + ToJavaScriptDate(this.dateRR)
+                                + "</td></tr>");
+                        });
+                    });
+                });
+        }
+
+        function ToJavaScriptDate(value) {
+            if (value == null)
+                return "Не сдан";
+            var pattern = /Date\(([^)]+)\)/;
+            var results = pattern.exec(value);
+            var dt = new Date(parseFloat(results[1]));
+            return dt.getDate() + "." + (dt.getMonth() + 1) + "." + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes();
+        }
+
+        function GetPointName(value) {
+            if (value == null)
+                return "-";
+            return value;
+        }
+    </script>
+
+
